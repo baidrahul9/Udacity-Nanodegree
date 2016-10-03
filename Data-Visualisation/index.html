@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <style>
+    circle.dimple-series-1{
+      fill:red;
+    }
+    </style>
+    <script type="text/javascript">
+      function draw(data) {
+      
+       "use strict";
+        
+      /*
+        Dimple.js Chart construction code
+      */
+        d3.select('#title');
+
+        //Drawing the first Line Chart for Years vs Assists
+        var mysvg = d3.select("#chart1").append("svg").attr("width", 1647).attr("height", 504).append('g').attr('class', 'chart');
+        var myBarChart = new dimple.chart(mysvg, data);
+        var myBary = myBarChart.addMeasureAxis("y", "assists");
+        var myBarx = myBarChart.addTimeAxis("x", "year");
+        myBarx.dateParseFormat = "%Y";
+        myBarx.tickFormat = "%Y";
+        myBarx.title = 'Year';
+        myBarChart.setBounds(75, 30, 480, 330);
+        myBarChart.addSeries('player', dimple.plot.line);
+        myBarChart.addLegend(570, 30, 200, 100, "Right");
+        myBarChart.draw();
+
+        //Drawing the second Line Chart for Years vs Assists_Per_Game
+        var svg2 = d3.select("#chart2").append("svg").attr("width", 1647).attr("height", 504).append('g').attr('class', 'chart');
+        var myBarGoalsChart = new dimple.chart(svg2, data);
+        myBarGoalsChart.setBounds(75, 30, 480, 330);
+        var myBarGoalsX = myBarGoalsChart.addTimeAxis("x", "year");
+        myBarGoalsX.dateParseFormat = "%Y";
+        myBarGoalsX.tickFormat = "%Y";
+        myBarGoalsX.title = 'Year'
+        myBarGoalsChart.title = "Assists distribution across the years"
+        var myBarAssisty = myBarGoalsChart.addMeasureAxis("y", "assists_per_game");
+        myBarGoalsChart.addSeries("player", dimple.plot.line);
+        myBarGoalsChart.addLegend(570, 30, 200, 100, "Right");
+        myBarGoalsChart.draw();
+
+        //Drawing the third chart for Year vs Goals 
+        var svg3 = d3.select("#chart3").append("svg").attr("width", 1647).attr("height", 504).append('g').attr('class', 'chart');
+        var myBarGoals = new dimple.chart(svg3, data);
+        myBarGoals.setBounds(75, 30, 480, 330);
+        var myBarGoalsX = myBarGoals.addTimeAxis("x", "year");
+        myBarGoalsX.dateParseFormat = "%Y";
+        myBarGoalsX.tickFormat = "%Y";
+        myBarGoalsX.title = 'Year'
+        myBarGoals.title = "Assists distribution across the years"
+        var myBarAssisty = myBarGoals.addMeasureAxis("y", "goals");
+        myBarGoals.addSeries("player", dimple.plot.line);
+        myBarGoals.addLegend(570, 30, 200, 100, "Right");
+        myBarGoals.draw();
+
+        //Drawing the final plot for visualisation.
+        var svg4 = d3.select("#chart4").append("svg").attr("width", 1647).attr("height", 504).append('g').attr('class', 'chart');
+        var myChart = new dimple.chart(svg4, data);
+        var x = myChart.addTimeAxis("x", "year"); 
+        myChart.addMeasureAxis("y", "goals_per_game");
+        x.dateParseFormat = "%Y";
+        x.tickFormat = "%Y";
+        x.title = 'Year';
+        myChart.setBounds(75, 30, 480, 330);
+        myChart.addSeries('player', dimple.plot.line);
+        myChart.addSeries(["goals", "appearance","assists","player"], dimple.plot.scatter);
+        var myLegend = myChart.addLegend(570, 30, 200, 100, "Right");
+        myChart.draw();
+        
+        //Adding Hover Event
+        d3.selectAll('path')
+          .style('opacity', 0.75)
+          .on('mouseover', function(e) {
+          d3.select(this)
+            .style('stroke-width', '8px')
+            .style('opacity', 1)
+            .attr('z-index', '1');
+        }).on('mouseleave', function(e) {
+          d3.select(this)
+            .style('stroke-width', '2px')
+            .style('opacity', 0.75)
+            .attr('z-index', '0');
+        });
+
+        };
+      </script>
+  </head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the CSV file
+    and pass the contents of it to the draw function
+    */
+  d3.csv("football_data.csv", draw);
+  </script>
+  <div id='title' >
+  <h2 align = center>Players catching up to Ronaldo and Messi</h2>
+  <br/>
+  </div>
+  <div id='basicInfo'>
+  <p>
+  The data has been chosen for two major clubs in the world, Real Madrid and Barcelona FC. These clubs were chosen because of their repotoire of buying the best players in the world.<br/>
+  I chose the data from 2010-2015 because that is when Ballon D'or was started, which is the highest footballing award in Europe and these clubs' players have won all the time since it's introduction.<br/>
+  We are trying to analyze whether or not other players from the same clubs have come closer to compete for Ballon D'or and I hope the below visualisation helps you make that decision. Hover over any line to see it more effectively.
+  </p>
+  <br/>
+  </div>
+  <div id='chart1'>The below plot shows how the # of assists have varied across the years</div>
+  <div id='chart2'>The below plot shows how the # of assists per game have varied across the years. Now this shows a better picture than the above plot!</div>
+  <div id='chart3'>The below plot shows how the # of goals have varied across the years</div>
+  <div id='chart4'>The below plot shows how the # of goals per game have varied across the years. This plot is conclusive of the fact that competition has improved by a good margin and has become closer than ever.<br/>
+  *This is a normalized plot. It is used to answer the question that whether or not the number of goals increase with the number of games with consistency.<br/>
+  Hove over the Scatterplot (Red Dot) to find more information.
+  </div>
+</body>
+</html>
