@@ -1,2 +1,2 @@
 # DAN-Machine Learning
-Please use <a href = https://github.com/baidrahul9/DAN-Machine-Learning/blob/master/Enron_Report.pdf> this pdf</a> to navigate and understand the project.
+Please use <a href = https://github.com/baidrahul9/Udacity-Nanodegree/blob/master/Machine-Learning/Enron_Report.pdf> this pdf</a> to navigate and understand the project.
